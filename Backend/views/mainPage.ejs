@@ -1,0 +1,30 @@
+<% include common/header.ejs %>
+
+<nav class="nav navbar-nav navbar-right  rightBox">
+    <div class="order"><b>Замовлення</b>
+        <label class="how how_buy">0</label>
+        <button type="button" class="btn btn-link btn-xs font clean">Очитити замовлення</button>
+    </div>
+    <div class="container-fluid buy" id="cart">
+    </div>
+    <div class="infoGoods">
+    </div>
+        <p>
+        <center><button	type="button" class="btn btn-warning order-buy btn-lg color" disabled="disabled">Замовити</button></center>
+        </p>
+</nav>
+
+<div class="container mainCont">
+    <center><h4><b>Усі піци</b><label class="how how_sel">8</label></h4>
+        <button type="button" class="btn-group btn btn-link btn-xs hidden-xs color" id="filter-all">Усі</button>
+        <button type="button" class="btn-group btn btn-link btn-xs hidden-xs color" id="filter-meat">Мясні</button>
+        <button type="button" class="btn-group btn btn-link btn-xs hidden-xs color" id="filter-pineapple">З ананасами</button>
+        <button type="button" class= "btn-group btn btn-link btn-xs hidden-xs color" id="filter-mushroom">З грибами</button>
+        <button type="button" class="btn-group btn btn-link btn-xs hidden-xs color" id="filter-ocean">З морепродуктами</button>
+        <button type="button" class="btn-group btn btn-link btn-xs hidden-xs color" id="filter-tomato">Вега</button>
+    </center>
+    <div class="row" id="pizza_list">
+    </div>
+    <div id="googleMap"></div>
+</div>
+<% include common/footer.ejs %>

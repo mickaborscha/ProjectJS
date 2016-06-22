@@ -177,6 +177,16 @@ var pizza_info = [
 
 module.exports = pizza_info;
 },{}],2:[function(require,module,exports){
+var basil = require('basil.js');
+basil = new basil();
+
+exports.get = function (key) {
+	return basil.get(key);
+};
+exports.set = function (key, value) {
+	return basil.set(key, value);
+};
+},{"basil.js":7}],3:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -184,11 +194,11 @@ module.exports = pizza_info;
 var ejs = require('ejs');
 
 
-exports.PizzaMenu_OneItem = ejs.compile("<%\n\nfunction getIngredientsArray(pizza) {\n    //Отримує вміст піци\n    var content = pizza.content;\n    var result = [];\n\n    //Object.keys повертає масив ключів в об’єкті JavaScript\n\n    Object.keys(content).forEach(function(key){\n\n        //a.concat(b) створює спільний масив із масивів a та b\n        result = result.concat(content[key]);\n    });\n\n    return result;\n}\n\n   %>\n<div class=\"col-md-6 col-lg-4 pizza-card\">\n    <div class=\"thumbnail\">\n        <img class=\"pizza-icon\" src=\"<%= pizza.icon %>\" alt=\"Pizza\">\n\n        <% if(pizza.is_new) { %>\n        <span class=\"label label-danger\">Нова</span>\n        <% } else if(pizza.is_popular) {%>\n        <span class=\"label label-success\">Популярна</span>\n        <% } %>\n\n        <div class=\"caption\">\n            <span class=\"title\"><%= pizza.title %></span>\n            <div class=\"type\"><%= pizza.type %></div>\n            <div class=\"description\">\n                <%= getIngredientsArray(pizza).join(\", \") %>\n            </div>\n        </div>\n\n        <!-- Перед тим щоб показати кнопку необхідно переконатися, що піца має великий розмір -->\n        <button class=\"btn btn-primary buy-big\">Купити велику</button>\n    </div>\n</div>");
+exports.PizzaMenu_OneItem = ejs.compile("<%\r\n\r\nfunction getIngredientsArray(pizza) {\r\n    //Отримує вміст піци\r\n    var content = pizza.content;\r\n    var result = [];\r\n\r\n    //Object.keys повертає масив ключів в об’єкті JavaScript\r\n\r\n    Object.keys(content).forEach(function(key){\r\n\r\n        //a.concat(b) створює спільний масив із масивів a та b\r\n        result = result.concat(content[key]);\r\n    });\r\n\r\n    return result;\r\n}\r\n\r\n   %>\r\n<div class=\"col-md-6 col-lg-4 pizza-card\">\r\n    <div class=\"thumbnail\">\r\n        <% if(pizza.is_new) { %>\r\n        <span class=\"label label-danger new\">Нова</span>\r\n        <% } else if(pizza.is_popular) {%>\r\n        <span class=\"label label-danger new green\">Популярна</span>\r\n        <% } %>\r\n        <img class=\"pizza-icon\" src=\"<%= pizza.icon %>\" alt=\"Pizza\">\r\n        <div class=\"caption\">\r\n            <div class=\"caption\"><h3><%= pizza.title %></h3>\r\n\r\n                <p class=\"pizzaInfo\"><%= pizza.type %></p>\r\n                <p>\r\n                    <%= getIngredientsArray(pizza).join(\", \") %>\r\n                </p>\r\n                <%if(pizza.big_size && pizza.small_size){%>\r\n                <p>\r\n                        <span class=\"goodInfo marge\">\r\n                            <img src=\"assets/images/size-icon.svg\"><%=pizza.small_size[\"size\"]%>\r\n                        </span>\r\n                        <span class=\"goodInfo\">\r\n                            <img src=\"assets/images/size-icon.svg\"><%=pizza.big_size[\"size\"]%>\r\n                        </span>\r\n                    <br>\r\n                    <span class=\"goodInfo marge\">\r\n                            <img src=\"assets/images/weight.svg\"><%=pizza.small_size[\"weight\"]%>\r\n                        </span>\r\n                    <span class=\"goodInfo\"><img src=\"assets/images/weight.svg\"><%=pizza.big_size[\"weight\"]%></span>\r\n                </p>\r\n                <p>\r\n                    <label class=\"price marge\"><%=pizza.small_size[\"price\"]%> грн.</label>\r\n                    <label class=\"price\"><%=pizza.big_size[\"price\"]%> грн.</label>\r\n                </p>\r\n                <p>\r\n                    <a href=\"#\" class=\"btn btn-warning color marge buy-small\">Купити</a>\r\n                    <a href=\"#\" class=\"btn btn-warning color buy-big\">Купити</a>\r\n                </p>\r\n                <%} else {%>\r\n                <center> <%if(pizza.small_size){%><span class=\"goodInfo small_pizza_size\">\r\n                            <img src=\"assets/images/size-icon.svg\"><%=pizza.small_size[\"size\"]%>\r\n                        </span>\r\n                    <br>\r\n                    <span class=\"goodInfo small_pizza_weight\">\r\n                            <img src=\"assets/images/weight.svg\"><%=pizza.small_size[\"weight\"]%>\r\n                        </span>\r\n                    <br>\r\n                    <label class=\"small_pizza_price\"><%=pizza.small_size[\"price\"]%> грн.</label>\r\n                    <br>\r\n                <a href=\"#\" class=\"btn btn-warning color buy-small\">Купити</a></center>\r\n                <%}else{%>\r\n                <center><span class=\"goodInfo big_pizza_size\">\r\n                            <img src=\"assets/images/size-icon.svg\"><%=pizza.big_size[\"size\"]%>\r\n                        </span>\r\n                    <br>\r\n                    <span class=\"goodInfo big_pizza_weight\">\r\n                            <img src=\"assets/images/weight.svg\"><%=pizza.big_size[\"weight\"]%>\r\n                        </span>\r\n                    <br>\r\n                    <label class=\"big_pizza_price\"><%=pizza.big_size[\"price\"]%> грн.</label>\r\n                    <br>\r\n                    <a href=\"#\" class=\"btn btn-warning color buy-big\">Купити</a>\r\n                </center>\r\n                <%}%>\r\n                <%}%>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
 
-exports.PizzaCart_OneItem = ejs.compile("<div>\n    <%= pizza.title %> (<%= size %>)\n    <div>Ціна: <%= pizza[size].price %> грн.</div>\n    <div>\n        <button class=\"btn btn-danger minus\">-</button>\n        <span class=\"label label-default\"><%= quantity %></span>\n        <button class=\"btn btn-success plus\">+</button>\n    </div>\n</div>");
+exports.PizzaCart_OneItem = ejs.compile("<div class=\"one-order\">\n    <span>\n\t<img class=\"pizza-icon img-rounded\" height =\"50px\" width=\"50px\" alt=\"Піца\" src=\"<%= pizza.icon %>\">\n    </span>\n    <span>\n\t<p class=\"title-order\"><%= pizza.title %> (<%if(size == \"big_size\") { %>Велика<% } %><%if(size == \"small_size\") { %>Мала<% } %>)</p>\n\t<div class=\"order-text\">\n\t\t<img src=\"assets/images/size-icon.svg\"/>\n\t\t<span class=\"diagonal\"><%= pizza[size].size %></span>\n\t\t<img src=\"assets/images/weight.svg\" />\n\t\t<span class=\"diagonal\"><%= pizza[size].weight %></span>\n\t</div>\n    <div class=\"price-box\">\n\t\t<span class=\"price\"><span class=\"amountPrice\"><%= pizza[size].price %></span>грн</span>\n        <button class=\"btn bth-xs btn-cirlce btn-danger minus\">&#8722</button>\n        <span class=\"quantity\"><%= quantity %></span>\n        <button class=\"btn bth-xs btn-cirlce btn-success plus\">+</button>\n\t\t<button class=\"btn bth-xs btn-cirlce btn-default delete\">&#10006</button>\n        \n    </div>\n        </span>\n</div>");
 
-},{"ejs":6}],3:[function(require,module,exports){
+},{"ejs":8}],4:[function(require,module,exports){
 /**
  * Created by chaika on 25.01.16.
  */
@@ -204,11 +214,12 @@ $(function(){
 
 
 });
-},{"./Pizza_List":1,"./pizza/PizzaCart":4,"./pizza/PizzaMenu":5}],4:[function(require,module,exports){
+},{"./Pizza_List":1,"./pizza/PizzaCart":5,"./pizza/PizzaMenu":6}],5:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
 var Templates = require('../Templates');
+var Storage	=require('../Storage/storage');
 
 //Перелік розмірів піци
 var PizzaSize = {
@@ -216,38 +227,64 @@ var PizzaSize = {
     Small: "small_size"
 };
 
+var pizza_count;
+var $sum = $(".order-info2");
+var $deleteAll = $(".clear-order");
+var $money = 0;
+
+
 //Змінна в якій зберігаються перелік піц в кошику
 var Cart = [];
 
 //HTML едемент куди будуть додаватися піци
-var $cart = $("#cart");
+var $cart = $(".order-main");
 
 function addToCart(pizza, size) {
     //Додавання однієї піци в кошик покупок
 
-    //Приклад реалізації, можна робити будь-яким іншим способом
-    Cart.push({
-        pizza: pizza,
-        size: size,
-        quantity: 1
-    });
-
+    var add_new=true;
+    for( var a=0;a<Cart.length;a++){
+        if((pizza===Cart[a].pizza)&&(size===Cart[a].size)) {
+            Cart[a].quantity += 1;
+            pizza_count++;
+            add_new=false;
+        }
+    }
+    if(add_new===true){
+        Cart.push({
+            pizza: pizza,
+            size: size,
+            quantity: 1
+        });
+        pizza_count++;
+    }
+   $money += pizza[size].price;
     //Оновити вміст кошика на сторінці
     updateCart();
 }
 
+
 function removeFromCart(cart_item) {
     //Видалити піцу з кошика
     //TODO: треба зробити
+  Cart.splice(Cart.indexOf(cart_item), 1);
+    pizza_count-=cart_item.quantity;
+    
+    $money-= cart_item.pizza[cart_item.size].price*cart_item.quantity;
 
+    
     //Після видалення оновити відображення
     updateCart();
 }
 
 function initialiseCart() {
     //Фукнція віпрацьвуватиме при завантаженні сторінки
-    //Тут можна наприклад, зчитати вміст корзини який збережено в Local Storage то показати його
-    //TODO: ...
+    var saved_pizza = Storage.get('cart');
+    
+    if(saved_pizza){
+        Cart=saved_pizza;
+    }
+
 
     updateCart();
 }
@@ -269,20 +306,55 @@ function updateCart() {
         var html_code = Templates.PizzaCart_OneItem(cart_item);
 
         var $node = $(html_code);
+        
+       $node.find(".delete").click(function(){
+            removeFromCart(cart_item);
+        });
+
 
         $node.find(".plus").click(function(){
             //Збільшуємо кількість замовлених піц
             cart_item.quantity += 1;
-
+            $money += cart_item.pizza[cart_item.size].price;
             //Оновлюємо відображення
             updateCart();
         });
 
+         $node.find(".minus").click(function(){
+            //Збільшуємо кількість замовлених піц
+             
+             if(cart_item.quantity==1){
+                removeFromCart(cart_item);
+             }else{
+                $money -= cart_item.pizza[cart_item.size].price;
+                 cart_item.quantity -= 1;
+               
+                 
+             }
+            //Оновлюємо відображення
+            updateCart();
+        });
+        
         $cart.append($node);
     }
-
+    
+    
+    
     Cart.forEach(showOnePizzaInCart);
-
+    
+   
+    
+    $deleteAll.click(function(){
+        
+       Cart = [];
+        $money =0;
+        updateCart();
+        
+        
+    });
+    $(".order-info2").html($money);
+    $(".count-span").html(Cart.length);
+     Storage.set("cart",Cart);
 }
 
 exports.removeFromCart = removeFromCart;
@@ -292,7 +364,7 @@ exports.getPizzaInCart = getPizzaInCart;
 exports.initialiseCart = initialiseCart;
 
 exports.PizzaSize = PizzaSize;
-},{"../Templates":2}],5:[function(require,module,exports){
+},{"../Storage/storage":2,"../Templates":3}],6:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -300,8 +372,17 @@ var Templates = require('../Templates');
 var PizzaCart = require('./PizzaCart');
 var Pizza_List = require('../Pizza_List');
 
+var $all = $("#all-pizza-filter");
+var $meat = $("#meat-pizza-filter");
+var $pine = $("#pineapple-pizza-filter");
+var $mush = $("#mushroom-pizza-filter");
+var $see = $("#seefood-pizza-filter");
+var $vega = $("#no-meat-pizza-filter");
+
+
+
 //HTML едемент куди будуть додаватися піци
-var $pizza_list = $("#pizza_list");
+var $pizza_list = $(".pizza-list");
 
 function showPizzaList(list) {
     //Очищаємо старі піци в кошику
@@ -326,6 +407,59 @@ function showPizzaList(list) {
     list.forEach(showOnePizza);
 }
 
+$all.click(function(){
+    
+    filterPizza("additional");
+    
+});
+
+$meat.click(function(){
+    filterPizza("meat");
+    
+    $(".count-title").text("Мясні піци");
+    
+    
+    
+});
+
+$pine.click(function(){
+        
+    filterPizza("pineapple");
+     $(".count-title").text("Піци з ананасами");
+    
+    
+    
+});
+
+$mush.click(function(){
+    
+    filterPizza("mushroom");
+     $(".count-title").text("Піци з грибами");
+    
+    
+    
+});
+
+$see.click(function(){
+    
+    
+     $(".count-title").text("Піци з морепродуктами");
+    filterPizza("ocean");
+    
+    
+});
+
+$vega.click(function(){
+    
+    filterPizza("tomato");
+     $(".count-title").text("Вега піци");
+    
+    
+    
+});
+
+
+
 function filterPizza(filter) {
     //Масив куди потраплять піци які треба показати
     var pizza_shown = [];
@@ -333,7 +467,10 @@ function filterPizza(filter) {
     Pizza_List.forEach(function(pizza){
         //Якщо піка відповідає фільтру
         //pizza_shown.push(pizza);
-
+            if(filter in pizza.content){
+                pizza_shown.push(pizza);
+            }
+            
         //TODO: зробити фільтри
     });
 
@@ -348,7 +485,376 @@ function initialiseMenu() {
 
 exports.filterPizza = filterPizza;
 exports.initialiseMenu = initialiseMenu;
-},{"../Pizza_List":1,"../Templates":2,"./PizzaCart":4}],6:[function(require,module,exports){
+},{"../Pizza_List":1,"../Templates":3,"./PizzaCart":5}],7:[function(require,module,exports){
+(function () {
+	// Basil
+	var Basil = function (options) {
+		return Basil.utils.extend({}, Basil.plugins, new Basil.Storage().init(options));
+	};
+
+	// Version
+	Basil.version = '0.4.2';
+
+	// Utils
+	Basil.utils = {
+		extend: function () {
+			var destination = typeof arguments[0] === 'object' ? arguments[0] : {};
+			for (var i = 1; i < arguments.length; i++) {
+				if (arguments[i] && typeof arguments[i] === 'object')
+					for (var property in arguments[i])
+						destination[property] = arguments[i][property];
+			}
+			return destination;
+		},
+		each: function (obj, fnIterator, context) {
+			if (this.isArray(obj)) {
+				for (var i = 0; i < obj.length; i++)
+					if (fnIterator.call(context, obj[i], i) === false) return;
+			} else if (obj) {
+				for (var key in obj)
+					if (fnIterator.call(context, obj[key], key) === false) return;
+			}
+		},
+		tryEach: function (obj, fnIterator, fnError, context) {
+			this.each(obj, function (value, key) {
+				try {
+					return fnIterator.call(context, value, key);
+				} catch (error) {
+					if (this.isFunction(fnError)) {
+						try {
+							fnError.call(context, value, key, error);
+						} catch (error) {}
+					}
+				}
+			}, this);
+		},
+		registerPlugin: function (methods) {
+			Basil.plugins = this.extend(methods, Basil.plugins);
+		}
+	};
+  	// Add some isType methods: isArguments, isBoolean, isFunction, isString, isArray, isNumber, isDate, isRegExp.
+	var types = ['Arguments', 'Boolean', 'Function', 'String', 'Array', 'Number', 'Date', 'RegExp']
+	for (var i = 0; i < types.length; i++) {
+		Basil.utils['is' + types[i]] = (function (type) {
+			return function (obj) {
+				return Object.prototype.toString.call(obj) === '[object ' + type + ']';
+			};
+		})(types[i]);
+	}
+
+	// Plugins
+	Basil.plugins = {};
+
+	// Options
+	Basil.options = Basil.utils.extend({
+		namespace: 'b45i1',
+		storages: ['local', 'cookie', 'session', 'memory'],
+		expireDays: 365
+	}, window.Basil ? window.Basil.options : {});
+
+	// Storage
+	Basil.Storage = function () {
+		var _salt = 'b45i1' + (Math.random() + 1)
+				.toString(36)
+				.substring(7),
+			_storages = {},
+			_toStoragesArray = function (storages) {
+				if (Basil.utils.isArray(storages))
+					return storages;
+				return Basil.utils.isString(storages) ? [storages] : [];
+			},
+			_toStoredKey = function (namespace, path) {
+				var key = '';
+				if (Basil.utils.isString(path) && path.length)
+					path = [path];
+				if (Basil.utils.isArray(path) && path.length)
+					key = path.join('.');
+				return key && namespace ? namespace + '.' + key : key;
+			},
+			_toKeyName = function (namespace, key) {
+				if (!namespace)
+					return key;
+				return key.replace(new RegExp('^' + namespace + '.'), '');
+			},
+			_toStoredValue = function (value) {
+				return JSON.stringify(value);
+			},
+			_fromStoredValue = function (value) {
+				return value ? JSON.parse(value) : null;
+			};
+
+		// HTML5 web storage interface
+		var webStorageInterface = {
+			engine: null,
+			check: function () {
+				try {
+					window[this.engine].setItem(_salt, true);
+					window[this.engine].removeItem(_salt);
+				} catch (e) {
+					return false;
+				}
+				return true;
+			},
+			set: function (key, value, options) {
+				if (!key)
+					throw Error('invalid key');
+				window[this.engine].setItem(key, value);
+			},
+			get: function (key) {
+				return window[this.engine].getItem(key);
+			},
+			remove: function (key) {
+				window[this.engine].removeItem(key);
+			},
+			reset: function (namespace) {
+				for (var i = 0, key; i < window[this.engine].length; i++) {
+					key = window[this.engine].key(i);
+					if (!namespace || key.indexOf(namespace) === 0) {
+						this.remove(key);
+						i--;
+					}
+				}
+			},
+			keys: function (namespace) {
+				var keys = [];
+				for (var i = 0, key; i < window[this.engine].length; i++) {
+					key = window[this.engine].key(i);
+					if (!namespace || key.indexOf(namespace) === 0)
+						keys.push(_toKeyName(namespace, key));
+				}
+				return keys;
+			}
+		};
+
+		// local storage
+		_storages.local = Basil.utils.extend({}, webStorageInterface, {
+			engine: 'localStorage'
+		});
+		// session storage
+		_storages.session = Basil.utils.extend({}, webStorageInterface, {
+			engine: 'sessionStorage'
+		});
+
+		// memory storage
+		_storages.memory = {
+			_hash: {},
+			check: function () {
+				return true;
+			},
+			set: function (key, value, options) {
+				if (!key)
+					throw Error('invalid key');
+				this._hash[key] = value;
+			},
+			get: function (key) {
+				return this._hash[key] || null;
+			},
+			remove: function (key) {
+				delete this._hash[key];
+			},
+			reset: function (namespace) {
+				for (var key in this._hash) {
+					if (!namespace || key.indexOf(namespace) === 0)
+						this.remove(key);
+				}
+			},
+			keys: function (namespace) {
+				var keys = [];
+				for (var key in this._hash)
+					if (!namespace || key.indexOf(namespace) === 0)
+						keys.push(_toKeyName(namespace, key));
+				return keys;
+			}
+		};
+
+		// cookie storage
+		_storages.cookie = {
+			check: function () {
+				return navigator.cookieEnabled;
+			},
+			set: function (key, value, options) {
+				if (!this.check())
+					throw Error('cookies are disabled');
+				options = options || {};
+				if (!key)
+					throw Error('invalid key');
+				var cookie = encodeURIComponent(key) + '=' + encodeURIComponent(value);
+				// handle expiration days
+				if (options.expireDays) {
+					var date = new Date();
+					date.setTime(date.getTime() + (options.expireDays * 24 * 60 * 60 * 1000));
+					cookie += '; expires=' + date.toGMTString();
+				}
+				// handle domain
+				if (options.domain && options.domain !== document.domain) {
+					var _domain = options.domain.replace(/^\./, '');
+					if (document.domain.indexOf(_domain) === -1 || _domain.split('.').length <= 1)
+						throw Error('invalid domain');
+					cookie += '; domain=' + options.domain;
+				}
+				// handle secure
+				if (options.secure === true) {
+					cookie += '; secure';
+				}
+				document.cookie = cookie + '; path=/';
+			},
+			get: function (key) {
+				if (!this.check())
+					throw Error('cookies are disabled');
+				var encodedKey = encodeURIComponent(key);
+				var cookies = document.cookie ? document.cookie.split(';') : [];
+				// retrieve last updated cookie first
+				for (var i = cookies.length - 1, cookie; i >= 0; i--) {
+					cookie = cookies[i].replace(/^\s*/, '');
+					if (cookie.indexOf(encodedKey + '=') === 0)
+						return decodeURIComponent(cookie.substring(encodedKey.length + 1, cookie.length));
+				}
+				return null;
+			},
+			remove: function (key) {
+				// remove cookie from main domain
+				this.set(key, '', { expireDays: -1 });
+				// remove cookie from upper domains
+				var domainParts = document.domain.split('.');
+				for (var i = domainParts.length; i >= 0; i--) {
+					this.set(key, '', { expireDays: -1, domain: '.' + domainParts.slice(- i).join('.') });
+				}
+			},
+			reset: function (namespace) {
+				var cookies = document.cookie ? document.cookie.split(';') : [];
+				for (var i = 0, cookie, key; i < cookies.length; i++) {
+					cookie = cookies[i].replace(/^\s*/, '');
+					key = cookie.substr(0, cookie.indexOf('='));
+					if (!namespace || key.indexOf(namespace) === 0)
+						this.remove(key);
+				}
+			},
+			keys: function (namespace) {
+				if (!this.check())
+					throw Error('cookies are disabled');
+				var keys = [],
+					cookies = document.cookie ? document.cookie.split(';') : [];
+				for (var i = 0, cookie, key; i < cookies.length; i++) {
+					cookie = cookies[i].replace(/^\s*/, '');
+					key = decodeURIComponent(cookie.substr(0, cookie.indexOf('=')));
+					if (!namespace || key.indexOf(namespace) === 0)
+						keys.push(_toKeyName(namespace, key));
+				}
+				return keys;
+			}
+		};
+
+		return {
+			init: function (options) {
+				this.setOptions(options);
+				return this;
+			},
+			setOptions: function (options) {
+				this.options = Basil.utils.extend({}, this.options || Basil.options, options);
+			},
+			support: function (storage) {
+				return _storages.hasOwnProperty(storage);
+			},
+			check: function (storage) {
+				if (this.support(storage))
+					return _storages[storage].check();
+				return false;
+			},
+			set: function (key, value, options) {
+				options = Basil.utils.extend({}, this.options, options);
+				if (!(key = _toStoredKey(options.namespace, key)))
+					return false;
+				value = options.raw === true ? value : _toStoredValue(value);
+				var where = null;
+				// try to set key/value in first available storage
+				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage, index) {
+					_storages[storage].set(key, value, options);
+					where = storage;
+					return false; // break;
+				}, null, this);
+				if (!where) {
+					// key has not been set anywhere
+					return false;
+				}
+				// remove key from all other storages
+				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage, index) {
+					if (storage !== where)
+						_storages[storage].remove(key);
+				}, null, this);
+				return true;
+			},
+			get: function (key, options) {
+				options = Basil.utils.extend({}, this.options, options);
+				if (!(key = _toStoredKey(options.namespace, key)))
+					return null;
+				var value = null;
+				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage, index) {
+					if (value !== null)
+						return false; // break if a value has already been found.
+					value = _storages[storage].get(key, options) || null;
+					value = options.raw === true ? value : _fromStoredValue(value);
+				}, function (storage, index, error) {
+					value = null;
+				}, this);
+				return value;
+			},
+			remove: function (key, options) {
+				options = Basil.utils.extend({}, this.options, options);
+				if (!(key = _toStoredKey(options.namespace, key)))
+					return;
+				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage) {
+					_storages[storage].remove(key);
+				}, null, this);
+			},
+			reset: function (options) {
+				options = Basil.utils.extend({}, this.options, options);
+				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage) {
+					_storages[storage].reset(options.namespace);
+				}, null, this);
+			},
+			keys: function (options) {
+				options = options || {};
+				var keys = [];
+				for (var key in this.keysMap(options))
+					keys.push(key);
+				return keys;
+			},
+			keysMap: function (options) {
+				options = Basil.utils.extend({}, this.options, options);
+				var map = {};
+				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage) {
+					Basil.utils.each(_storages[storage].keys(options.namespace), function (key) {
+						map[key] = Basil.utils.isArray(map[key]) ? map[key] : [];
+						map[key].push(storage);
+					}, this);
+				}, null, this);
+				return map;
+			}
+		};
+	};
+
+	// Access to native storages, without namespace or basil value decoration
+	Basil.memory = new Basil.Storage().init({ storages: 'memory', namespace: null, raw: true });
+	Basil.cookie = new Basil.Storage().init({ storages: 'cookie', namespace: null, raw: true });
+	Basil.localStorage = new Basil.Storage().init({ storages: 'local', namespace: null, raw: true });
+	Basil.sessionStorage = new Basil.Storage().init({ storages: 'session', namespace: null, raw: true });
+
+	// browser export
+	window.Basil = Basil;
+
+	// AMD export
+	if (typeof define === 'function' && define.amd) {
+		define(function() {
+			return Basil;
+		});
+	// commonjs export
+	} else if (typeof module !== 'undefined' && module.exports) {
+		module.exports = Basil;
+	}
+
+})();
+
+},{}],8:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -874,6 +1380,10 @@ Template.prototype = {
       , d = this.opts.delimiter;
 
     if (matches && matches.length) {
+      if (this.opts.compileDebug && this.opts.filename) {
+        this.source =  '    ; __lines = ' + JSON.stringify(this.templateText) + '\n';
+        this.source += '    ; __filename = "' + this.opts.filename.replace(/\\/g,  '/') + '"\n';
+      }
       matches.forEach(function (line, index) {
         var opening
           , closing
@@ -1058,6 +1568,12 @@ Template.prototype = {
   }
 };
 
+/*
+ * Export the internal function for escaping XML so people
+ * can use for manual escaping if needed
+ * */
+exports.escapeXML = utils.escapeXML;
+
 /**
  * Express.js support.
  *
@@ -1099,7 +1615,7 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":8,"./utils":7,"fs":9,"path":10}],7:[function(require,module,exports){
+},{"../package.json":10,"./utils":9,"fs":11,"path":12}],9:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1242,7 +1758,7 @@ exports.cache = {
 };
 
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports={
   "name": "ejs",
   "description": "Embedded JavaScript templates",
@@ -1251,7 +1767,7 @@ module.exports={
     "engine",
     "ejs"
   ],
-  "version": "2.4.1",
+  "version": "2.4.2",
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
@@ -1290,16 +1806,17 @@ module.exports={
   },
   "scripts": {
     "test": "mocha",
+    "sample": "npm install express && node sample/index.js",
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha",
     "doc": "rimraf out && jsdoc -c jsdoc.json lib/* docs/jsdoc/*",
     "devdoc": "rimraf out && jsdoc -p -c jsdoc.json lib/* docs/jsdoc/*"
   },
-  "_id": "ejs@2.4.1",
-  "_shasum": "82e15b1b2a1f948b18097476ba2bd7c66f4d1566",
-  "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.4.1.tgz",
+  "_id": "ejs@2.4.2",
+  "_shasum": "7057eb4812958fb731841cd9ca353343efe597b1",
+  "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.4.2.tgz",
   "_from": "ejs@>=2.4.1 <3.0.0",
-  "_npmVersion": "2.10.1",
-  "_nodeVersion": "0.12.4",
+  "_npmVersion": "2.15.1",
+  "_nodeVersion": "4.4.4",
   "_npmUser": {
     "name": "mde",
     "email": "mde@fleegix.org"
@@ -1315,16 +1832,19 @@ module.exports={
     }
   ],
   "dist": {
-    "shasum": "82e15b1b2a1f948b18097476ba2bd7c66f4d1566",
-    "tarball": "http://registry.npmjs.org/ejs/-/ejs-2.4.1.tgz"
+    "shasum": "7057eb4812958fb731841cd9ca353343efe597b1",
+    "tarball": "https://registry.npmjs.org/ejs/-/ejs-2.4.2.tgz"
   },
-  "directories": {},
-  "readme": "ERROR: No README data found!"
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/ejs-2.4.2.tgz_1464117640663_0.8193834638223052"
+  },
+  "directories": {}
 }
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -1552,16 +2072,44 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":11}],11:[function(require,module,exports){
+},{"_process":13}],13:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+(function () {
+  try {
+    cachedSetTimeout = setTimeout;
+  } catch (e) {
+    cachedSetTimeout = function () {
+      throw new Error('setTimeout is not defined');
+    }
+  }
+  try {
+    cachedClearTimeout = clearTimeout;
+  } catch (e) {
+    cachedClearTimeout = function () {
+      throw new Error('clearTimeout is not defined');
+    }
+  }
+} ())
 var queue = [];
 var draining = false;
 var currentQueue;
 var queueIndex = -1;
 
 function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
     draining = false;
     if (currentQueue.length) {
         queue = currentQueue.concat(queue);
@@ -1577,7 +2125,7 @@ function drainQueue() {
     if (draining) {
         return;
     }
-    var timeout = setTimeout(cleanUpNextTick);
+    var timeout = cachedSetTimeout(cleanUpNextTick);
     draining = true;
 
     var len = queue.length;
@@ -1594,7 +2142,7 @@ function drainQueue() {
     }
     currentQueue = null;
     draining = false;
-    clearTimeout(timeout);
+    cachedClearTimeout(timeout);
 }
 
 process.nextTick = function (fun) {
@@ -1606,7 +2154,7 @@ process.nextTick = function (fun) {
     }
     queue.push(new Item(fun, args));
     if (queue.length === 1 && !draining) {
-        setTimeout(drainQueue, 0);
+        cachedSetTimeout(drainQueue, 0);
     }
 };
 
@@ -1645,4 +2193,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[3]);
+},{}]},{},[4]);
